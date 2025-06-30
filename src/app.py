@@ -16,7 +16,6 @@ CORS(app)
 # Create the jackson family object
 jackson_family = FamilyStructure("Jackson")
 
-
 # Handle/serialize errors like a JSON object
 @app.errorhandler(APIException)
 def handle_invalid_usage(error):
@@ -28,6 +27,23 @@ def handle_invalid_usage(error):
 def sitemap():
     return generate_sitemap(app)
 
+@app.route('/members/<int:id>', methods = ['GET'])
+def member_get():
+    self = jackson_family.get_member()
+    response_body = {self._member[id]}
+    return jsonify(response_body), 200
+
+@app.route('/members/<int:id>', methods = ['POST'])
+def member_add():
+    self = jackson_family.add_member()
+    response_body = {self._member[id]}
+    return jsonify(response_body), 200
+
+@app.route('/members/<int:id>', methods = ['DELETE'])
+def member_delete():
+    self = jackson_family.delete_member()
+    response_body = {self._member[id]}
+    return jsonify(response_body), 200
 
 @app.route('/members', methods=['GET'])
 def handle_hello():
