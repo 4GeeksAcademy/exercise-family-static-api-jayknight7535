@@ -17,49 +17,46 @@ class FamilyStructure:
                 "last_name": last_name,
                 "age": 33,
                 "lucky_numbers": [7, 13, 22]
+            },
+            {
+                "id": self._generate_id(),
+                "first_name": "Jane",
+                "last_name": last_name,
+                "age": 35,
+                "lucky_numbers": [10, 14, 3]
+            },
+            {
+                "id": self._generate_id(),
+                "first_name": "Jimmy",
+                "last_name": last_name,
+                "age": 5,
+                "lucky_numbers": [1]
             }
         ]
 
-    # This method generates a unique incremental ID
     def _generate_id(self):
         generated_id = self._next_id
         self._next_id += 1
         return generated_id
 
     def add_member(self, member):
-        ## You have to implement this method
-        ## Append the member to the list of _members
-        new_member= [
-            {
-                "first_name" : self.first_name,
-                "last_name" : self.last_name,
-                "age" : self.age,
-                "lucky_numbers": [self.lucky_numbers],
-            }
-        ]
-        self._members.append(new_member)
-        return jsonify(self._members), 200
-    
+        if "id" not in member:
+            member["id"] = self._generate_id()
+        member["last_name"] = self.last_name
+        self._members.append(member)
 
     def delete_member(self, id):
-        ## You have to implement this method
-        ## Loop the list and delete the member with the given id
-        new_member = list(filter(
-            lambda x: x["id"] != id,
-            self._member))
-        self._member = new_member
+        for i, member in enumerate(self._members):
+            if member["id"] == id:
+                del self._members[i]
+                return True
+        return False
 
-        book_idx = [self[id] for self in self._members].index(id)
-        del self[self._members]
-        return "", 200
+    def get_member(self, id):
+        for member in self._members:
+            if member["id"] == id:
+                return member
+        return None
 
-    def get_member(self, id)-> tuple[str, int]:
-        self = next(filter(lambda x: id == x["id"],self._member), None)
-        return jsonify(self), 200
-   ## You have to implement this method
-        ## Loop all the members and return the one with the given id
-
-    # This method is done, it returns a list with all the family members
     def get_all_members(self):
         return self._members
-    
